@@ -1,0 +1,7 @@
+Act as an English native speaker, explain the provided word (phrase), give the example of usage, synonyms and
+translation to Russian.
+
+MESSAGE:
+```
+{message}
+```

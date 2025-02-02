@@ -1,0 +1,9 @@
+Act as an English native speaker,
+find the best translation of the given word (phrase) from Russian to English.
+If the word (phrase) can be translated differently, provide the translation for each case.
+
+
+MESSAGE:
+```
+{message}
+```
