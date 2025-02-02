@@ -1,8 +1,11 @@
+import logging
 from enum import Enum
 from pathlib import Path
 from typing import Iterable, Tuple
 
 from llm_model import Model
+
+logger = logging.getLogger(__name__)
 
 
 class Chunk:
@@ -28,11 +31,14 @@ class Handler:
 
         latin_cnt, cyrillic_cnt, word_cnt = self._cnt_letters(message)
 
-        if word_cnt >= 5:
-            yield from self._check_grammar(message)
-        elif cyrillic_cnt > latin_cnt:
+        if cyrillic_cnt > latin_cnt:
+            logger.info("Assume need translate from russian to english")
             yield from self._translate_ru_en(message)
+        elif word_cnt >= 5:
+            logger.info("Assume need to check grammar")
+            yield from self._check_grammar(message)
         else:
+            logger.info("Assume need translate from english to russian")
             yield from self._translate_en_ru(message)
 
     @staticmethod
