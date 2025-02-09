@@ -3,6 +3,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterable, Tuple
 
+from cache import KVStorage
 from llm_model import Model
 
 logger = logging.getLogger(__name__)
@@ -34,9 +35,6 @@ class Handler:
         if cyrillic_cnt > latin_cnt:
             logger.info("Assume need translate from russian to english")
             yield from self._translate_ru_en(message)
-        elif word_cnt >= 5:
-            logger.info("Assume need to check grammar")
-            yield from self._check_grammar(message)
         else:
             logger.info("Assume need translate from english to russian")
             yield from self._translate_en_ru(message)
@@ -66,20 +64,22 @@ class Handler:
         model = Model.from_env()
         return Handler(model)
 
-    def _check_grammar(self, message: str) -> Iterable[Chunk]:
-        with open(self._templates / "check_grammar.txt") as f:
-            template = f.read()
-        prompt = template.format(message=message)
-        yield from (Chunk(text, "") for text in self._batch(self.model.invoke(prompt)) if len(text) > 0)
-
     def _translate_en_ru(self, message: str):
         with open(self._templates / "translate_en_ru.txt") as f:
             template = f.read()
         prompt = template.format(message=message)
-        yield from (Chunk(text, "") for text in self._batch(self.model.invoke(prompt)) if len(text) > 0)
+        yield from (
+            Chunk(text, "")
+            for text in self._batch(self.model.invoke(prompt))
+            if len(text) > 0
+        )
 
     def _translate_ru_en(self, message: str):
         with open(self._templates / "translate_ru_en.txt") as f:
             template = f.read()
         prompt = template.format(message=message)
-        yield from (Chunk(text, "") for text in self._batch(self.model.invoke(prompt)) if len(text) > 0)
+        yield from (
+            Chunk(text, "")
+            for text in self._batch(self.model.invoke(prompt))
+            if len(text) > 0
+        )
