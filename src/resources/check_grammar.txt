@@ -1,6 +1,0 @@
-Act as an English native speaker, check the grammar of the given message, and explain the errors.
-
-MESSAGE:
-```
-{message}
-```

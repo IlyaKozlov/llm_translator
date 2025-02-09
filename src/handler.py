@@ -5,16 +5,9 @@ from typing import Iterable, Tuple
 
 from cache import KVStorage
 from llm_model import Model
+from schemas.chunk import Chunk
 
 logger = logging.getLogger(__name__)
-
-
-class Chunk:
-
-    def __init__(self, message: str, message_type: str):
-        assert len(message) > 0
-        self.message = message
-        self.message_type = message_type
 
 
 class Handler:
@@ -40,14 +33,16 @@ class Handler:
             yield from self._translate_en_ru(message)
 
     @staticmethod
-    def _batch(stream: Iterable[str], max_len: int = 30) -> Iterable[str]:
+    def _batch(stream: Iterable[str], max_len: int = 300) -> Iterable[str]:
         batch = ""
-        for chunk in stream:
-            batch += chunk
-            if len(batch) > max_len:
-                yield batch
+        letters = (letter for chunk in stream for letter in chunk)
+        for letter in letters:
+            batch += letter
+            if len(batch) > max_len or letter == "\n":
+                if batch.strip() != "```":
+                    yield batch
                 batch = ""
-        if len(batch) > 0:
+        if len(batch) > 0 and batch.strip() != "```":
             yield batch
 
     def _cnt_letters(self, message: str) -> Tuple[int, int, int]:
@@ -69,7 +64,7 @@ class Handler:
             template = f.read()
         prompt = template.format(message=message)
         yield from (
-            Chunk(text, "")
+            Chunk(text)
             for text in self._batch(self.model.invoke(prompt))
             if len(text) > 0
         )
@@ -79,7 +74,7 @@ class Handler:
             template = f.read()
         prompt = template.format(message=message)
         yield from (
-            Chunk(text, "")
+            Chunk(text)
             for text in self._batch(self.model.invoke(prompt))
             if len(text) > 0
         )

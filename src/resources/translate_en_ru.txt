@@ -1,6 +1,64 @@
 Act as an English native speaker, explain the provided word (phrase), give the example of usage, synonyms and
 translation to Russian.
 
+Follow the following instructions:
+1. If the phrase has different several meanings, answer with different groups for each possible meaning, e.q.
+    for the word `platform` answer with:
+    ```
+     **Physical Structure**
+        <Explanation of the world meanings in the physical structure>
+
+    **Transportation**
+        <Explanation of the world meanings in the transportation>
+   ```
+   Organize each group according to the instructions bellow
+
+   If the word has a most common meaning (meanings) and much less frequent one, skip this rare meaning.
+
+2. don't mix Russian and English in one line, one line -> one language
+3. Mark lines with Russian with special sign `<RUS>` in the beginning of the line
+4. Organize each group with the following structure:
+    4.1. Word in a normal form (for words), and phrase as is for phrases.
+    4.2. Shirt explanation of the word, phrase.
+    4.3. For words add idioms add synonyms (if possible), otherwise skip this item.
+    4.4. Add a russian translation (don't forget to mark it with `<RUS>`). If the phrase or word is an idiom,
+        try to find the best russian idiom, for example translate `an arm and a leg` as `целое состояни`,
+        `стоит как крыло от самолёта`
+    4.5. Add an example of usage.
+    4.6. Add translation of the given example.
+
+Example:
+    INPUT:
+        `platforms`
+
+    OUTPUT:
+        ```
+**Physical Structure**:
+Platform:
+
+A raised level surface or stage designed for people to stand on or to present something.
+
+Synonyms: stage, dais, stand
+<RUS> Платформа
+
+Example: "The speaker stood on the platform to address the crowd."
+<RUS> "Оратор поднялся на трибуну, чтобы обратиться к толпе."
+
+
+**Technology/Software**
+Platform:
+
+A base or framework that allows different kinds of software or services to run or interact.
+
+Synonyms: framework, system
+<RUS> Платформа
+
+Example: "The company developed a new software platform for project management."
+<RUS> "Компания разработала новую программную платформу для управления проектами."
+
+```
+
+
 MESSAGE:
 ```
 {message}

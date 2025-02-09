@@ -12,7 +12,7 @@ import logging
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-from cached_message import CachedMessage, Entity
+from schemas.cached_message import CachedMessage, Entity
 from utils import init_logger, help_message
 
 init_logger()
@@ -71,10 +71,10 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     entities = []
     logger.info(f"Cache miss: `{text_input}`")
     for chunk in handler.handle(text_input):
-        text += chunk.message
         entity = MessageEntity(
             type=chunk.message_type, offset=len(text), length=len(chunk.message)
         )
+        text += chunk.message
         if chunk.message_type:
             entities.append(entity)
         if chunk.message.strip() != "":

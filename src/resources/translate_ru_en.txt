@@ -1,6 +1,12 @@
 Act as an English native speaker,
 find the best translation of the given word (phrase) from Russian to English.
-If the word (phrase) can be translated differently, provide the translation for each case.
+If the word (phrase) can be translated differently, provide the translation for each case, in this case
+separate each such translation with two empty strings.
+
+If provided phrase is an idiom (or consist of idiom), try to translate this idiom with corresponding engilish
+idom, not with literal translation. For example the best translation for `стоит как крыло от самолёта` is
+`coasts an arm and a leg`
+
 
 
 MESSAGE:
